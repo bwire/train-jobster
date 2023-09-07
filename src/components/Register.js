@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Wrapper from '../assets/wrappers/RegisterPage';
-import Logo from '../components/Logo';
+import { Logo, FormRow } from '../components';
 
 const initialState = {
   name: '',
@@ -24,38 +24,27 @@ const Register = () => {
       <form action='' className='form' onSubmit={onSubmit}>
         <Logo />
         <h3>Login</h3>
-        <div className='form-now'>
-          <label htmlFor='name' className='form-label'>
-            name
-          </label>
-          <input
-            type='text'
-            className='form-input'
-            name='name'
-            value={values.name}
-            onChange={handleChange}
-          />
-          <label htmlFor='email' className='form-label'>
-            e-mail
-          </label>
-          <input
-            type='text'
-            className='form-input'
-            name='email'
-            value={values.email}
-            onChange={handleChange}
-          />
-          <label htmlFor='password' className='form-label'>
-            password
-          </label>
-          <input
-            type='password'
-            className='form-input'
-            name='email'
-            value={values.password}
-            onChange={handleChange}
-          />
-        </div>
+        <FormRow
+          type='text'
+          name='name'
+          value={values.name}
+          onChange={handleChange}
+          labelText='name'
+        />
+        <FormRow
+          type='email'
+          name='email'
+          value={values.email}
+          onChange={handleChange}
+          labelText='e-mail'
+        />
+        <FormRow
+          type='password'
+          name='password'
+          value={values.email}
+          onChange={handleChange}
+          labelText='password'
+        />
         <button type='submit' className='btn btn-block' onClick={onSubmit}>
           submit
         </button>
