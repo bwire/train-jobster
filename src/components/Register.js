@@ -11,26 +11,38 @@ const initialState = {
 
 const Register = () => {
   const [values, setValues] = useState(initialState);
+
+  const toggleMember = () => {
+    setValues({ ...values, isMember: !values.isMember });
+  };
+
   const handleChange = (e) => {
-    console.log(e.target);
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    const { name, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name)) {
+      console.log('Please, fill out all fields');
+      return;
+    }
   };
 
   return (
     <Wrapper className='full-page'>
       <form action='' className='form' onSubmit={onSubmit}>
         <Logo />
-        <h3>Login</h3>
-        <FormRow
-          type='text'
-          name='name'
-          value={values.name}
-          onChange={handleChange}
-          labelText='name'
-        />
+        <h3> {values.isMember ? 'Login' : 'Register'} </h3>
+        {!values.isMember && (
+          <FormRow
+            type='text'
+            name='name'
+            value={values.name}
+            onChange={handleChange}
+            labelText='name'
+          />
+        )}
         <FormRow
           type='email'
           name='email'
@@ -41,13 +53,19 @@ const Register = () => {
         <FormRow
           type='password'
           name='password'
-          value={values.email}
+          value={values.password}
           onChange={handleChange}
           labelText='password'
         />
         <button type='submit' className='btn btn-block' onClick={onSubmit}>
           submit
         </button>
+        <p>
+          {values.isMember ? 'Not a member yet?' : 'Already a member?'}
+          <button type='button' className='member-btn' onClick={toggleMember}>
+            {values.isMember ? 'Register' : 'Login'}
+          </button>
+        </p>
       </form>
     </Wrapper>
   );
