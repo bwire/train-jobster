@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import Wrapper from '../assets/wrappers/RegisterPage';
 import { Logo, FormRow } from '../components';
 
@@ -24,8 +25,7 @@ const Register = () => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
-      console.log('Please, fill out all fields');
-      return;
+      toast.error('Please, fill out all fields');
     }
   };
 
