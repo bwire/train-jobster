@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Wrapper from '../assets/wrappers/RegisterPage';
 import { Logo, FormRow } from '../components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../features/user/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -14,7 +15,17 @@ const initialState = {
 
 const Register = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const [values, setValues] = useState(initialState);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
