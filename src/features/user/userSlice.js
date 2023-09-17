@@ -4,10 +4,12 @@ import axios from '../../utils/axios';
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
+  removeUserFromLocalStorage,
 } from '../../utils/localStorage';
 
 const initialState = {
   isLoading: true,
+  isSidebarOpen: false,
   user: getUserFromLocalStorage(),
 };
 
@@ -20,7 +22,7 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       return api.rejectWithValue(error.response.data.msg);
     }
-  }
+  },
 );
 
 export const loginUser = createAsyncThunk(
@@ -32,13 +34,22 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       return api.rejectWithValue(error.response.data.msg);
     }
-  }
+  },
 );
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+    logoutUser: (state) => {
+      state.isSidebarOpen = false;
+      state.user = null;
+      removeUserFromLocalStorage();
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -72,4 +83,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { toggleSidebar, logoutUser } = userSlice.actions;
 export default userSlice.reducer;
