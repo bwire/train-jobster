@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   isLoading: true,
-  isSidebarOpen: false,
+  isSidebarOpen: true,
   user: getUserFromLocalStorage(),
 };
 
