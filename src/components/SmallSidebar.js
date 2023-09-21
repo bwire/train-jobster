@@ -1,13 +1,18 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import Wrapper from '../assets/wrappers/SmallSidebar';
+import Logo from '../components/Logo';
 import { toggleSidebar } from '../features/user/userSlice';
-import Logo from './Logo';
-import { useDispatch, useSelector } from 'react-redux';
+import links from '../utils/links';
 
 const SmallSidebar = () => {
   const dispatch = useDispatch();
-  const { isSidebarOpen } = useSelector(({ user }) => user);
+  const { isSidebarOpen } = useSelector((state) => state.user);
+  const toggle = () => {
+    dispatch(toggleSidebar());
+  };
 
   return (
     <Wrapper>
@@ -17,16 +22,30 @@ const SmallSidebar = () => {
         }
       >
         <div className="content">
-          <button
-            className="close-btn"
-            onClick={() => dispatch(toggleSidebar())}
-          >
+          <button className="close-btn" onClick={toggle}>
             <FaTimes />
           </button>
           <header>
             <Logo />
           </header>
-          <div className="nav-links">nav links</div>
+          <div className="nav-links">
+            {links.map((link) => {
+              const { id, text, path, icon } = link;
+              return (
+                <NavLink
+                  key={id}
+                  to={path}
+                  className={({ isActive }) =>
+                    isActive ? 'nav-link active' : 'nav-link'
+                  }
+                  onClick={toggle}
+                >
+                  <span className="icon">{icon}</span>
+                  {text}
+                </NavLink>
+              );
+            })}
+          </div>
         </div>
       </div>
     </Wrapper>
