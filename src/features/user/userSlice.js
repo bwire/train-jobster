@@ -8,7 +8,7 @@ import {
 } from '../../utils/localStorage';
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   isSidebarOpen: true,
   user: getUserFromLocalStorage(),
 };
@@ -32,6 +32,23 @@ export const loginUser = createAsyncThunk(
       const resp = await axios.post('/auth/login', user);
       return resp.data;
     } catch (error) {
+      return api.rejectWithValue(error.response.data.msg);
+    }
+  },
+);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, api) => {
+    try {
+      const resp = await axios.patch('auth/updateUser', user, {
+        headers: {
+          authorization: `Bearer: ${api.getState().user.user.token}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error.message);
       return api.rejectWithValue(error.response.data.msg);
     }
   },
@@ -77,6 +94,20 @@ const userSlice = createSlice({
         toast.success(`Welcome Back ${user.name}`);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+        toast.success('user updated');
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       });
