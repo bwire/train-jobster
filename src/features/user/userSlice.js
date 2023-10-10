@@ -6,6 +6,11 @@ import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
 } from '../../utils/localStorage';
+import {
+  loginUserThunk,
+  registerUserThunk,
+  updateUserThunk,
+} from './userThunk';
 
 const initialState = {
   isLoading: false,
@@ -15,46 +20,16 @@ const initialState = {
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async (user, api) => {
-    try {
-      const resp = await axios.post('/auth/register', user);
-      return resp.data;
-    } catch (error) {
-      return api.rejectWithValue(error.response.data.msg);
-    }
-  },
+  async (user, api) => registerUserThunk('auth/register', user, api),
 );
 
-export const loginUser = createAsyncThunk(
-  'user/loginUser',
-  async (user, api) => {
-    try {
-      const resp = await axios.post('/auth/login', user);
-      return resp.data;
-    } catch (error) {
-      return api.rejectWithValue(error.response.data.msg);
-    }
-  },
+export const loginUser = createAsyncThunk('user/loginUser', async (user, api) =>
+  loginUserThunk('/auth/login', user, api),
 );
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
-  async (user, api) => {
-    try {
-      const resp = await axios.patch('auth/updateUser', user, {
-        headers: {
-          authorization: `Bearer: ${api.getState().user.user.token}`,
-        },
-      });
-      return resp.data;
-    } catch (error) {
-      if (error.response.status === 401) {
-        api.dispatch(logoutUser());
-        return api.rejectWithValue('Unauthorized! Logging Out...');
-      }
-      return api.rejectWithValue(error.response.data.msg);
-    }
-  },
+  async (user, api) => updateUserThunk('auth/updateUser', user, api),
 );
 
 const userSlice = createSlice({
