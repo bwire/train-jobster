@@ -28,6 +28,7 @@ const AddJob = () => {
     <Wrapper>
       <form className="form">
         <h3>{isEditing ? 'edit job' : 'add job'}</h3>
+
         <div className="form-center">
           <FormRow
             type="text"
@@ -35,16 +36,12 @@ const AddJob = () => {
             value={position}
             handleChange={handleJobInput}
           />
-        </div>
-        <div className="form-center">
           <FormRow
             type="text"
             name="company"
             value={company}
             handleChange={handleJobInput}
           />
-        </div>
-        <div className="form-center">
           <FormRow
             type="text"
             labelText="job location"
@@ -53,6 +50,7 @@ const AddJob = () => {
             handleChange={handleJobInput}
           />
         </div>
+
         <div className="btn-container">
           <button
             type="button"
