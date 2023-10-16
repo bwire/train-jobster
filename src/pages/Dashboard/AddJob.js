@@ -23,7 +23,7 @@ const AddJob = () => {
     isEditing,
   } = useSelector((state) => state.job);
   const dispatch = useDispatch();
-  const user = useSelector(({ user }) => user.user);
+  const { user } = useSelector(({ user }) => user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
