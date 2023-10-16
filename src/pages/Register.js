@@ -66,14 +66,14 @@ const Register = () => {
           type='email'
           name='email'
           value={values.email}
-          onChange={handleChange}
+          handleChange={handleChange}
           labelText='e-mail'
         />
         <FormRow
           type='password'
           name='password'
           value={values.password}
-          onChange={handleChange}
+          handleChange={handleChange}
           labelText='password'
         />
         <button type='submit' className='btn btn-block' onClick={onSubmit}>
